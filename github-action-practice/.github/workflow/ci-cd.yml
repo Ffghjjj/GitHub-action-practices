@@ -1,17 +1,35 @@
 
-# Workflow name
-name: Hello
+name: DevOps CI Pipeline
 
-# On tells when the workflow should run
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
-# Jobs tell what the workflow should do
 jobs:
-  say-hello:
+  build:
+    name: Build and Validate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Say Hello to everyone
-        run: echo "Hello Dosto"
- 
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
+        run: docker --version
+
+      - name: Build Docker Image
+        run: |
+          docker build -t devops-app:latest .
+
+      - name: Validate Docker Image
+        run: |
+          docker images devops-app:latest
+
+      - name: Pipeline Status
+        run: |
+          echo "CI Pipeline executed successfully!"
