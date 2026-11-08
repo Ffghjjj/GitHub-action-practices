@@ -1,0 +1,36 @@
+
+name: CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Show Files
+        run: ls -la
+
+  build:
+    needs: code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Application
+        run: echo "Application Build Successful"
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Tests
+        run: echo "All Tests Passed"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: echo "Application Deployed Successfully"
